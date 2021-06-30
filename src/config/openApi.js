@@ -11,7 +11,6 @@ dotenv.config();
 const yesterday = () => {
   const date = new Date();
   const yesterdate = date.getTime() - (1*24*60*60*1000);
-  console.log(yesterdate)
   date.setTime(yesterdate);
 
   const year = date.getFullYear();

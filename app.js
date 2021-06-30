@@ -4,7 +4,8 @@ import morgan from 'morgan';
 import nunjucks from 'nunjucks';
 import connect from './src/models/index.js';
 import covidRouter from './src/api/covidDailyRouter.js';
-
+// import setCovidData from './src/initialDB/setCovidData.js';
+// import setVaccineData from './src/initialDB/setVaccineData.js';
 const app = express();
 
 app.set('port', process.env.PORT || 3000);
@@ -16,7 +17,8 @@ nunjucks.configure('views', {
 
 //몽고db 연결
 connect();
-
+// setCovidData();
+// setVaccineData();
 app.use(morgan('dev'));
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, 'public')));
