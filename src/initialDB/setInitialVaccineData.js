@@ -1,7 +1,7 @@
 /*
 	크롤링 시작하기 전 날짜의 데이터들을 데이터베이스에 넣습니다. - vaccineData
 */
-import Vaccine from '../models/Vaccine.js';
+import setVaccineData from '../services/setVaccineData.js'
 import apiCall from '../services/apiCall.js';
 import openApi from '../config/openApi.js';
 
@@ -25,27 +25,14 @@ const getDateRange = () => {
 }
 
 //vaccine data 의 경우 날짜를 인수로 받아야 함
-const setVaccineData = async () => {
+const setInitialVaccineData = async () => {
 	const dates = await getDateRange();
 
 	for (let i = 0; i < dates.length; i++) {
 		openApi.vaccine_stat.url = `https://api.odcloud.kr/api/15077756/v1/vaccine-stat?page=1&perPage=10&cond%5BbaseDate%3A%3AEQ%5D=${dates[i]}%2000%3A00%3A00`;
 		const vaccineData = await apiCall(openApi.vaccine_stat);
-
-		const vaccDate = vaccineData.data[0].baseDate;
-		const accumFirst = vaccineData.data[0].totalFirstCnt;
-		const accumSecnd = vaccineData.data[0].totalSecondCnt;
-
-		const vaccination = await new Vaccine({
-			date: vaccDate,
-			accumulateFirstCnt: accumFirst,
-			accumulateSecondCnt: accumSecnd,
-		});
-		await vaccination.save((err, vac) => {
-			if (err) return console.error(err);
-			console.dir(vac);
-		})
+		await setVaccineData(vaccineData);
 	};
 }
 
-export default setVaccineData;
+export default setInitialVaccineData;
