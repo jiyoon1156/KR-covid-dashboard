@@ -4,8 +4,11 @@ import morgan from 'morgan';
 import nunjucks from 'nunjucks';
 import connect from './src/models/index.js';
 import covidRouter from './src/api/covidDailyRouter.js';
-// import setCovidData from './src/initialDB/setCovidData.js';
-// import setVaccineData from './src/initialDB/setVaccineData.js';
+// import setInitialCovidData from './src/initialDB/setInitialCovidData.js';
+// import setInitialVaccineData from './src/initialDB/setInitialVaccineData.js';
+// import task from './src/jobs/scheduler.js';
+// import openApi from './src/config/openApi.js';
+
 const app = express();
 
 app.set('port', process.env.PORT || 3000);
@@ -17,8 +20,11 @@ nunjucks.configure('views', {
 
 //몽고db 연결
 connect();
-// setCovidData();
-// setVaccineData();
+// setInitialCovidData();
+// setInitialVaccineData();
+// task('0 10 * * *', openApi.vaccine_stat).start();
+// task('0 10 * * *', openApi.covid_stat).start();
+
 app.use(morgan('dev'));
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, 'public')));
