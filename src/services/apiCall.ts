@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
-const apiCall = async (config) => {
+const apiCall = async (config: AxiosRequestConfig) => {
   const calledData = await axios(config)
     .then((response) => {
       const dataSet = response.data;

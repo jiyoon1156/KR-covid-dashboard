@@ -1,5 +1,5 @@
 import express from 'express';
-import Vaccine from '../models/Vaccine.js';
+import Vaccine from '../models/Vaccine';
 
 const router = express.Router();
 

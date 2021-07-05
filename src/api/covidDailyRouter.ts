@@ -1,5 +1,5 @@
 import express from 'express';
-import CovidDaily from '../models/CovidDaily.js';
+import CovidDaily from '../models/CovidDaily';
 
 const router = express.Router();
 
