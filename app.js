@@ -4,6 +4,8 @@ import morgan from 'morgan';
 import nunjucks from 'nunjucks';
 import connect from './src/models/index.js';
 import covidRouter from './src/api/covidDailyRouter.js';
+import covidCompositionRouter from './src/api/covidCompositionRouter.js';
+import vaccineRouter from './src/api/vaccineRouter.js';
 // import setInitialCovidData from './src/initialDB/setInitialCovidData.js';
 // import setInitialVaccineData from './src/initialDB/setInitialVaccineData.js';
 // import task from './src/jobs/scheduler.js';
@@ -22,8 +24,8 @@ nunjucks.configure('views', {
 connect();
 // setInitialCovidData();
 // setInitialVaccineData();
-// task('0 10 * * *', openApi.vaccine_stat).start();
-// task('0 10 * * *', openApi.covid_stat).start();
+// task('8 15 * * *', openApi.vaccine_stat).start();
+// task('0 17 * * *', openApi.covid_stat).start();
 
 app.use(morgan('dev'));
 const __dirname = path.resolve();
@@ -31,7 +33,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
-app.use('/covidDaily', covidRouter);
+app.use('/daily', covidRouter);
+app.use('/composition', covidCompositionRouter);
+app.use('/vaccine', vaccineRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.method}${req.url} 라우터가 없습니다`);
