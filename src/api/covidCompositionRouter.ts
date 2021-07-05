@@ -1,5 +1,5 @@
 import express from 'express';
-import CovidComposition from '../models/CovidComposition.js';
+import CovidComposition from '../models/CovidComposition';
 
 const router = express.Router();
 

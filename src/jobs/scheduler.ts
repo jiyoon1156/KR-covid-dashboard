@@ -3,14 +3,15 @@
 */
 
 import cron from 'node-cron';
-import openApi from '../config/openApi.js';
-import apiCall from '../services/apiCall.js';
-import setCovidData from '../services/setCovidData.js'
-import setVaccineData from '../services/setVaccineData.js';
-import CovidDaily from '../models/CovidDaily.js';
-import getDateRange from '../services/getDateRange.js'
+import openApi from '../config/openApi';
+import apiCall from '../services/apiCall';
+import setCovidData from '../services/setCovidData'
+import setVaccineData from '../services/setVaccineData';
+import CovidDaily from '../models/CovidDaily';
+import getDateRange from '../services/getDateRange'
+import { AxiosRequestConfig } from 'axios';
 
-const task = (time, api) => cron.schedule(time, async () => {
+const task = (time: string, api: AxiosRequestConfig) => cron.schedule(time, async () => {
   const data = await apiCall(api);
   if (api === openApi.covid_stat) {
     const covidInfo = await CovidDaily.find({}).sort('date');

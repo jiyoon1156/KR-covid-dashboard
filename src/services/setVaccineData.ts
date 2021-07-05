@@ -1,6 +1,7 @@
-import Vaccine from '../models/Vaccine.js';
+import { NextFunction } from 'express';
+import Vaccine from '../models/Vaccine';
 
-const setVaccineData = async (vaccineData) => {
+const setVaccineData = async (vaccineData: any) => {
 	const vaccDate = vaccineData.data[0].baseDate;
 	const accumFirst = vaccineData.data[0].totalFirstCnt;
 	const accumSecnd = vaccineData.data[0].totalSecondCnt;
@@ -10,7 +11,7 @@ const setVaccineData = async (vaccineData) => {
 		accumulateFirstCnt: accumFirst,
 		accumulateSecondCnt: accumSecnd,
 	});
-	await vaccination.save((err, vac) => {
+	await vaccination.save((err: Error, vac: NextFunction) => {
 		if (err) return console.error(err);
 		console.dir(vac);
 	});
