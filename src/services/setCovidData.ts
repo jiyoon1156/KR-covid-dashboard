@@ -1,7 +1,8 @@
-import CovidDaily from '../models/CovidDaily.js';
-import CovidComposition from '../models/CovidComposition.js';
+import CovidDaily from '../models/CovidDaily';
+import CovidComposition from '../models/CovidComposition';
+import { NextFunction } from 'express';
 
-const setCovidData = async (covidData, i) => {
+const setCovidData = async (covidData: any, i: number) => {
 	const covidStat = await new CovidDaily({
 		date: covidData[i].Date,
 		confirmed: covidData[i].Confirmed - covidData[i - 1].Confirmed,
@@ -15,12 +16,12 @@ const setCovidData = async (covidData, i) => {
 		active: covidData[i].Active,
 	})
 
-	await covidStat.save((err, covid) => {
+	await covidStat.save((err: Error, covid: NextFunction) => {
 		if (err) return console.error(err);
 		// console.dir(covid);
 	})
 
-	await covidCompose.save((err) => {
+	await covidCompose.save((err: Error) => {
 		if (err) return console.error(err);
 	})
 }

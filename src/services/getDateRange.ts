@@ -1,4 +1,4 @@
-const getDateRange = (startDay, endDay, subDay) => {
+const getDateRange = (startDay: number, endDay: number, subDay: number) => {
 	const oneDay = 1 * 24 * 60 * 60 * 1000;
 	let startDate = startDay;
 	const endDate = endDay - subDay;
