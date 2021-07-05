@@ -4,9 +4,9 @@ import Vaccine from '../models/Vaccine';
 const router = express.Router();
 
 router.route('/')
-	.get((req, res, next) => {
+	.get(async (req, res, next) => {
 		try {
-			const vaccineInfo = Vaccine.find({}).sort('date');
+			const vaccineInfo = await Vaccine.find({}).sort('date');
 			res.json(vaccineInfo);
 		} catch (err) {
 			console.error(err);

@@ -4,12 +4,11 @@ import morgan from 'morgan';
 import nunjucks from 'nunjucks';
 import connect from './models/index';
 import covidRouter from './api/covidDailyRouter';
-import covidCompositionRouter from './api/covidCompositionRouter.js';
-import vaccineRouter from './api/vaccineRouter.js';
-// import setInitialCovidData from './src/initialDB/setInitialCovidData.js';
-// import setInitialVaccineData from './src/initialDB/setInitialVaccineData.js';
-// import task from './src/jobs/scheduler.js';
-// import openApi from './src/config/openApi.js';
+import covidCompositionRouter from './api/covidCompositionRouter';
+import vaccineRouter from './api/vaccineRouter';
+import setInitialDB from './setInitialDB/init';
+import task from './jobs/scheduler';
+import openApi from './config/openApi';
 
 const app = express();
 
@@ -22,10 +21,9 @@ nunjucks.configure('views', {
 
 //몽고db 연결
 connect();
-// setInitialCovidData();
-// setInitialVaccineData();
-// task('8 15 * * *', openApi.vaccine_stat).start();
-// task('0 17 * * *', openApi.covid_stat).start();
+setInitialDB();
+task('0 10 * * *', openApi.vaccine_stat).start();
+task('0 10 * * *', openApi.covid_stat).start();
 
 app.use(morgan('dev'));
 const __dirname = path.resolve();
@@ -37,18 +35,20 @@ app.use('/daily', covidRouter);
 app.use('/composition', covidCompositionRouter);
 app.use('/vaccine', vaccineRouter);
 
-// app.use((req, res, next) => {
-//   const error = new Error(`${req.method}${req.url} 라우터가 없습니다`);
-//   error.status = 404;
-//   next(error);
-// })
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const err = new Error(`${req.method}${req.url} 라우터가 없습니다`);
+  // error.status = 404;
+  res.status(404);
+  next(err);
+})
 
-// app.use((err, req, res, next) => {
-//   res.locals.message = err.message;
-//   res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
-//   res.status(err.status || 500);
-//   res.render('error');
-// })
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  res.locals.message = err.message;
+  res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
+  // res.status(err.status || 500);
+  res.status(500);
+  res.render('error');
+})
 
 app.listen(app.get('port'), () => {
   console.log(app.get('port'), '번 포트에서 대기중');
