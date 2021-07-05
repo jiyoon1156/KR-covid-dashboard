@@ -1,12 +1,12 @@
 import express from 'express';
-import covidDaily from '../models/CovidDaily.js';
+import CovidDaily from '../models/CovidDaily.js';
 
 const router = express.Router();
 
 router.route('/')
 	.get(async (req, res, next) => {
 		try {
-			const covidInfo = await covidDaily.find({});
+			const covidInfo = await CovidDaily.find({}).sort('date');
 			res.json(covidInfo);
 		} catch (err) {
 			console.error(err);
