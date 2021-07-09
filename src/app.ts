@@ -22,8 +22,8 @@ nunjucks.configure('views', {
 //몽고db 연결
 connect();
 setInitialDB();
-task('0 10 * * *', openApi.vaccine_stat).start();
-task('0 10 * * *', openApi.covid_stat).start();
+task('42 10 * * *', openApi.vaccine_stat).start();
+task('42 10 * * *', openApi.covid_stat).start();
 
 app.use(morgan('dev'));
 const __dirname = path.resolve();

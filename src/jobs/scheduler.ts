@@ -8,33 +8,42 @@ import apiCall from '../services/apiCall';
 import setCovidData from '../services/setCovidData'
 import setVaccineData from '../services/setVaccineData';
 import CovidDaily from '../models/CovidDaily';
+import Vaccine from '../models/Vaccine';
 import getDateRange from '../services/getDateRange'
 import { AxiosRequestConfig } from 'axios';
+import { Mongoose } from 'mongoose';
 
-const task = (time: string, api: AxiosRequestConfig) => cron.schedule(time, async () => {
-  const data = await apiCall(api);
-  if (api === openApi.covid_stat) {
-    const covidInfo = await CovidDaily.find({}).sort('date');
-    const len = covidInfo.length;
+const updateData = async (model: Mongoose["Model"], api: AxiosRequestConfig) => {
+  const storedData = await model.find({}).sort('date');
+  const len = storedData.length;
+  const oneDay = 1 * 24 * 60 * 60 * 1000;
+  const lastDate = storedData[len - 1].date.getTime();
+  const today = new Date().getTime();
 
-    const oneDay = 1 * 24 * 60 * 60 * 1000;
-    const lastDate = covidInfo[len - 1].date.getTime();
-    const today = new Date().getTime();
-    if (lastDate < today) {
-      const dates = getDateRange(lastDate + oneDay, today,0);
+  if (lastDate < today) {
+    const dates = getDateRange(lastDate + oneDay, today,0);
+
+    if (model === CovidDaily) {
+      const data = await apiCall(api);
       for (let i = 0; i < dates.length; i++) {
         await setCovidData(data, data.length - dates.length + i);
-      }
+      };
+    } else if (model === Vaccine) {
+      for (let i = 0; i < dates.length; i++) {
+        openApi.vaccine_stat.url = `https://api.odcloud.kr/api/15077756/v1/vaccine-stat?page=1&perPage=10&cond%5BbaseDate%3A%3AEQ%5D=${dates[i]}%2000%3A00%3A00`;
+        const vaccineData = await apiCall(openApi.vaccine_stat);
+        await setVaccineData(vaccineData);
+      };
     };
-    console.log("=============open api covid successful============")
+  };
+};
+
+const task = (time: string, api: AxiosRequestConfig) => cron.schedule(time, async () => {
+  if (api === openApi.covid_stat) {
+    updateData(CovidDaily, api);
   } else if (api === openApi.vaccine_stat) {
-    //날짜 중복 확인 로직 필요
-    await setVaccineData(data);
-    console.log("=============open api vaccine successful============")
+    updateData(Vaccine, api);
   }
 });
-
-// task('56 23 * * *', openApi.covid_stat).start();
-// task('3 15 * * *', openApi.vaccine_stat).start();
 
 export default task

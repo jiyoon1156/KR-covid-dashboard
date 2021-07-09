@@ -1,15 +1,14 @@
-import { NextFunction } from 'express';
 import CovidDaily from '../models/CovidDaily';
 import CovidComposition from '../models/CovidComposition';
 
 const setDaily = async (covidData: any, i: number) => {
+	console.log(covidData[i]);
 	const covidStat = await new CovidDaily({
 		date: covidData[i].Date,
 		confirmed: covidData[i].Confirmed - covidData[i - 1].Confirmed,
 	});
-	await covidStat.save((err: Error, covid: NextFunction) => {
+	await covidStat.save((err: Error) => {
 		if (err) return console.error(err);
-		// console.dir(covid);
 	})
 };
 
