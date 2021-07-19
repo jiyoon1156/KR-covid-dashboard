@@ -23,7 +23,6 @@ module.exports = {
           loader: 'babel-loader',
         },
       },
-
     ],
   },
 
@@ -36,7 +35,7 @@ module.exports = {
   // 개발 서버 설정
   devServer: {
     host: 'localhost',
-    port: port,
+    port,
     open: true, // open page when start
   },
 };
