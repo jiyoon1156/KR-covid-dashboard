@@ -15,8 +15,8 @@ import Badge from '@material-ui/core/Badge';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Drawer from '@material-ui/core/Drawer';
-import Chart from './Chart';
-import Deposits from './Deposits';
+import Chart from './LinearChart';
+import RatioPieChart from './RatioPieChart';
 import VaccineChart from './VaccineChart';
 import TopNumbers from './TopNumbers';
 import useStyles from '../styles/Theme';
@@ -68,7 +68,7 @@ const Dashboard = () => {
             {/* Recent Deposits */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <Deposits />
+                <RatioPieChart />
               </Paper>
             </Grid>
             {/* Recent Orders */}

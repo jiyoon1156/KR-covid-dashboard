@@ -20,7 +20,7 @@ const data = [
   createData('24:00', undefined),
 ];
 
-const Chart = () => {
+const LinearChart = () => {
   const theme = useTheme();
 
   return (
@@ -49,4 +49,4 @@ const Chart = () => {
   );
 };
 
-export default Chart;
+export default LinearChart;
