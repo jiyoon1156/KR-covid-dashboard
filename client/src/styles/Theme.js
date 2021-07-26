@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme) => ({
     height: 280,
   },
   fixedHeightTop: {
-    height: 120,
+    height: 100,
   },
 }));
 

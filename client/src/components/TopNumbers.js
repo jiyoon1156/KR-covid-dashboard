@@ -10,7 +10,7 @@ const TopNumbers = ({ title, number }) => {
   return (
     <>
       <Title>{title}</Title>
-      <Typography component="p" variant="h4">
+      <Typography component="p" variant="h5" align="center">
         {number}
       </Typography>
     </>
