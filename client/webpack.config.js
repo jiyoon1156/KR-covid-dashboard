@@ -37,5 +37,13 @@ module.exports = {
     host: 'localhost',
     port,
     open: true, // open page when start
+
+    // proxy 설정 (express server)
+    proxy: {
+      '/' : {
+        target: 'http://localhost:5000',
+        secure: false
+      }
+    }
   },
 };
