@@ -1,6 +1,6 @@
 /*
   < Open API >
-  1. Covid19 status from https://covid19api.com/
+  1. Covid19 status from http://openapi.data.go.kr/
   2. Korea vaccination status from https://www.data.go.kr/index.do 2021-03-11부터 데이터있음
 */
 
@@ -24,7 +24,7 @@ const yesterday = () => {
 const openApi = {
   covid_stat: {
     Method: 'get',
-    url: 'https://api.covid19api.com/live/country/korea-south/status/confirmed',
+    url: `http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson?serviceKey=${process.env.COVID_AUTH_KEY}&startCreateDt=20210801`,
     headers: { },
   },
   vaccine_stat: {

@@ -7,7 +7,7 @@ router.route('/')
 	.get(async (req, res, next) => {
 		try {
 			const covidInfo = await CovidDaily.find({}).sort('date');
-			res.json(covidInfo);
+			res.json(covidInfo.slice(-9));
 		} catch (err) {
 			console.error(err);
 			next(err);

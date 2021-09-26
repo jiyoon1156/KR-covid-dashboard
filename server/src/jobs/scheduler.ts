@@ -21,15 +21,18 @@ const updateData = async (model: Mongoose["Model"], api: AxiosRequestConfig) => 
   const today = new Date().getTime();
 
   if (lastDate < today) {
-    const dates = getDateRange(lastDate + oneDay, today,0);
+    const dates = getDateRange(lastDate, today,0);
 
     if (model === CovidDaily) {
+      const date = dates[0].replace(/-/g,"");
+      openApi.covid_stat.url = openApi.covid_stat.url.replace(/startCreateDt=[0-9]*/,"startCreateDt=" + date);
       const data = await apiCall(api);
-      for (let i = 0; i < dates.length; i++) {
-        await setCovidData(data, data.length - dates.length + i);
+      const covidData = data.response.body.items.item
+      for (let i = covidData.length - 2; i >= 0; i--) {
+        await setCovidData(covidData, i);
       };
     } else if (model === Vaccine) {
-      for (let i = 0; i < dates.length; i++) {
+      for (let i = 1; i < dates.length; i++) {
         openApi.vaccine_stat.url = `https://api.odcloud.kr/api/15077756/v1/vaccine-stat?page=1&perPage=10&cond%5BbaseDate%3A%3AEQ%5D=${dates[i]}%2000%3A00%3A00`;
         const vaccineData = await apiCall(openApi.vaccine_stat);
         await setVaccineData(vaccineData);

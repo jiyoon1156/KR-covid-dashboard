@@ -5,10 +5,10 @@ import setCovidData from '../services/setCovidData'
 import apiCall from '../services/apiCall';
 import openApi from '../config/openApi';
 
-// covid data 세팅, 1월 16일부터 배열 2째부터임 (16일 confirmed - 15일 confirmed)
+// covid data 세팅, 8월 1일부터
 const setInitialCovidData = async () => {
 	const covidData = await apiCall(openApi.covid_stat);
-	for (let i = 2; i < covidData.length; i++) {
+	for (let i = covidData.length - 2; i >= 0; i--) {
 		await setCovidData(covidData, i);
 	};
 }
