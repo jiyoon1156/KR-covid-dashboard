@@ -2,12 +2,6 @@ import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import Title from './Title';
 
-const data = [
-  { name: 'Active', value: 350 },
-  { name: 'Deaths', value: 100 },
-  { name: 'Recovered', value: 300 },
-];
-
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 const RADIAN = Math.PI / 180;
@@ -23,7 +17,14 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
   );
 };
 
-const RatioPieChart = () => {
+const RatioPieChart = ({data}) => {
+
+  const chartData = [
+    { name: 'Active', value: data.active },
+    { name: 'Deaths', value: data.deaths },
+    { name: 'Recovered', value: data.recovered },
+  ];
+
   return (
     <>
       <Title>Active·Deaths·Recovered</Title>
@@ -31,7 +32,7 @@ const RatioPieChart = () => {
         <PieChart width={400} height={400}>
           <Tooltip />
           <Pie
-            data={data}
+            data={chartData}
             cx="50%"
             cy="50%"
             labelLine={false}
@@ -40,7 +41,7 @@ const RatioPieChart = () => {
             fill="#8884d8"
             dataKey="value"
           >
-            {data.map((entry, index) => (
+            {chartData.map((entry, index) => (
               // eslint-disable-next-line react/no-array-index-key
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}

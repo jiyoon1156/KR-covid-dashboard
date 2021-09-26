@@ -24,7 +24,7 @@ import Copyright from './Copyright';
 import Drawers from './Drawers';
 import ApplicationBar from './ApplicationBar';
 
-const Dashboard = () => {
+const Dashboard = ({ data }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -35,6 +35,8 @@ const Dashboard = () => {
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   const fixedHeightTop = clsx(classes.paper, classes.fixedHeightTop);
+  
+  const totalVaccine = data.vaccine[data.vaccine.length-1];
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -46,35 +48,35 @@ const Dashboard = () => {
           <Grid container spacing={3}>
             <Grid item xs={4}>
               <Paper className={fixedHeightTop}>
-                <TopNumbers title="Cases" number="187,739,616" />
+                <TopNumbers title="Cases" number={data.composition.accumulatedConfirmed} />
               </Paper>
             </Grid>
             <Grid item xs={4}>
               <Paper className={fixedHeightTop}>
-                <TopNumbers title="Deaths" number="4,047,966" />
+                <TopNumbers title="Deaths" number={data.composition.deaths} />
               </Paper>
             </Grid>
             <Grid item xs={4}>
               <Paper className={fixedHeightTop}>
-                <TopNumbers title="Vaccine Doses Administered" number="3,494,474,264" />
+                <TopNumbers title="Vaccine Doses Administered" number={totalVaccine.accumulateFirstCnt + totalVaccine.accumulateSecondCnt} />
               </Paper>
             </Grid>
             {/* Chart */}
             <Grid item xs={12}>
               <Paper className={fixedHeightPaper}>
-                <Chart />
+                <Chart data={data.daily}/>
               </Paper>
             </Grid>
             {/* Recent Deposits */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <RatioPieChart />
+                <RatioPieChart data={data.composition}/>
               </Paper>
             </Grid>
             {/* Recent Orders */}
             <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
-                <VaccineChart />
+                <VaccineChart data={data.vaccine}/>
               </Paper>
             </Grid>
           </Grid>

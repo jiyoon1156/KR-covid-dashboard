@@ -11,7 +11,7 @@ const TopNumbers = ({ title, number }) => {
     <>
       <Title>{title}</Title>
       <Typography component="p" variant="h5" align="center">
-        {number}
+        {number.toLocaleString('ko-KR')}
       </Typography>
     </>
   );
